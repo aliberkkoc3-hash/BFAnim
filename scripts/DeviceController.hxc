@@ -1,0 +1,76 @@
+import funkin.play.PlayState;
+import flixel.FlxG;
+import flixel.ui.FlxButton;
+import funkin.Paths;
+import funkin.modding.module.Module;
+import funkin.modding.events.UpdateScriptEvent;
+
+class DeviceController extends Module
+{
+    private var tauntButton:FlxButton;
+    private var buttonAdded:Bool = false;
+
+    public function new()
+    {
+        super("device_controller");
+    }
+
+    override function onUpdate(event:UpdateScriptEvent)
+    {
+        super.onUpdate(event);
+
+        // Sadece mobil cihazlarda ve oyun başladığında butonu ekle
+        if (!buttonAdded && PlayState.instance != null && PlayState.instance.camHUD != null)
+        {
+            if (FlxG.onMobile)
+            {
+                setupTauntButton();
+            }
+            buttonAdded = true;
+        }
+    }
+
+    private function setupTauntButton():Void
+    {
+        var btnWidth = 120;
+        var btnHeight = 120;
+
+        // Sağ kenara sıfır yaslanmış konum
+        var posX = FlxG.width - btnWidth - 10;
+        var posY = (FlxG.height / 2) - 60;
+
+        tauntButton = new FlxButton(posX, posY, "", function() {
+            executeTaunt();
+        });
+
+        var atlas = Paths.getSparrowAtlas('TauntButton');
+        if (atlas != null)
+        {
+            tauntButton.frames = atlas;
+            tauntButton.animation.addByPrefix('normal', 'Taunt(Idle).png', 24, false);
+            tauntButton.animation.addByPrefix('highlight', 'Taunt(Hover).png', 24, false);
+            tauntButton.animation.addByPrefix('pressed', 'Taunt(Confirm).png', 24, false);
+            
+            tauntButton.setGraphicSize(btnWidth, btnHeight);
+            tauntButton.updateHitbox();
+        }
+
+        tauntButton.cameras = [PlayState.instance.camHUD];
+        PlayState.instance.add(tauntButton);
+    }
+
+    private function executeTaunt():Void
+    {
+        FlxG.sound.play(Paths.sound('hey_Sound'));
+
+        if (PlayState.instance != null && PlayState.instance.currentStage != null)
+        {
+            var bf = PlayState.instance.currentStage.getBoyfriend();
+            if (bf != null)
+            {
+                bf.playAnimation('hey', true, false);
+                bf.holdTimer = 0;
+            }
+        }
+    }
+}

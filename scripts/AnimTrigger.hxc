@@ -1,0 +1,39 @@
+import funkin.play.PlayState;
+import flixel.FlxG;
+import funkin.Paths;
+import funkin.modding.module.Module;
+import funkin.modding.events.UpdateScriptEvent;
+
+class AnimTrigger extends Module
+{
+    public function new()
+    {
+        super("bfanim");
+    }
+
+    override function onUpdate(event:UpdateScriptEvent)
+    {
+        super.onUpdate(event);
+
+        // --- B TUŞU: Bilgisayar için standart kısayol ---
+        if (FlxG.keys.justPressed.B)
+        {
+            triggerTaunt();
+        }
+    }
+
+    private function triggerTaunt():Void
+    {
+        FlxG.sound.play(Paths.sound('hey_Sound'));
+
+        if (PlayState.instance != null && PlayState.instance.currentStage != null)
+        {
+            var bf = PlayState.instance.currentStage.getBoyfriend();
+            if (bf != null)
+            {
+                bf.playAnimation('hey', true, false);
+                bf.holdTimer = 0;
+            }
+        }
+    }
+}
