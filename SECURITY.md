@@ -1,55 +1,43 @@
-# 🔒 Security Policy — BFAnim
+# Prism Crew Studio — Security Policy
 
-> Boyfriend'in taunt animasyonları bir şeyleri bozabilir. Güvenlik açıkları ise gerçekten sorun çıkarabilir. İkisini karıştırmayalım. 💀
+**Version:** 1.0  
+**Effective Date:** October 24, 2026  
+**Copyright:** © 2026 Prism Crew Studio. All rights reserved.
 
-## Supported Versions
+### 1. Our Objective
 
-BFAnim için güvenlik desteği, bakım durumu ve yayımlanan sürümlere bağlıdır.
+At Prism Crew Studio, we prioritize the security of our projects, source code, and users. This policy outlines how security vulnerabilities discovered in our projects should be reported and addressed.
 
-Şu an için resmî olarak desteklenen sürümlere ilişkin kesin bir taahhüt verilmemiştir.
+### 2. Supported Versions
 
-| Version | Security Support |
-|---|---|
-| Latest release | Durum duyurulacaktır |
-| Older releases | Destek durumu doğrulanmamıştır |
-| Development builds | Kararlı güvenlik desteği garanti edilmez |
+Security updates are provided for project versions that we actively maintain and explicitly support. The support status for each project is specified within its respective repository.
 
-## Reporting a Vulnerability
+### 3. Reporting Vulnerabilities
 
-BFAnim'de bir güvenlik açığı bulduğunu düşünüyorsan lütfen geliştiriciyle özel bir kanal üzerinden iletişime geç.
+If you discover a security vulnerability, please:
 
-**Contact:** [Add a security contact or private reporting URL]
+- Report it privately to Prism Crew Studio before disclosing it publicly.
+- Identify the affected project and version.
+- Describe the impact of the vulnerability and, if possible, provide steps to reproduce it.
+- Do not include passwords, access keys, or other personal/sensitive information in your report.
 
-Raporuna mümkün olduğunca şu bilgileri ekle:
+For reporting, please use the *Private vulnerability reporting* feature found under the **Security** tab of the relevant GitHub repository. If this feature is unavailable, please use the private communication channel specified by the repository maintainer.
 
-- Etkilenen BFAnim sürümü veya commit.
-- Kullanılan oyun ve motor sürümü.
-- Sorunun açıklaması ve etkisi.
-- Sorunu yeniden oluşturmak için gereken adımlar.
-- Varsa ilgili günlükler veya teknik kanıtlar.
+### 4. Responsible Disclosure
 
-Güvenlik açığını herkese açık biçimde paylaşmadan önce geliştiriciye bildirimde bulunman önerilir. Böylece sorun araştırılabilir ve mümkünse düzeltme hazırlanabilir.
+We request that you allow a reasonable amount of time for us to investigate, verify, and remediate any reported vulnerabilities. Vulnerabilities should not be disclosed publicly without prior coordination with Prism Crew Studio.
 
-## Response Process
+We do not guarantee that every report will be accepted, resolved within a specific timeframe, or eligible for a reward.
 
-Güvenlik raporları incelendiğinde:
+### 5. Scope and Limitations
 
-1. Sorunun yeniden oluşturulabilirliği ve etkisi değerlendirilebilir.
-2. Gerekirse düzeltme veya geçici çözüm hazırlanabilir.
-3. Etkilenen sürümler ve çözüm bilgileri uygun olduğunda duyurulabilir.
+Security research must be conducted only on systems for which you have authorization and in compliance with all applicable laws. Do not access user data, disrupt services, or put others' systems at risk by testing for vulnerabilities.
 
-Belirli bir yanıt süresi veya düzeltme tarihi garanti edilmez.
+### 6. Communication
 
-## Scope
+For security-related notifications, use the security contact method specified in the GitHub repository for the relevant project. Do not assume or guess a contact address that has not been explicitly provided.
 
-Bu politika öncelikle BFAnim'in kendi kodu ve dağıtımına ilişkindir.
+---
 
-FNF, oyun motorları, üçüncü taraf kütüphaneler ve diğer modlarla ilgili açıklar, ilgili projelerin veya üreticilerin sorumluluğunda olabilir.
-
-Lütfen güvenlik raporlarında gerçek kullanıcı verilerini, hesap bilgilerini veya özel anahtarları paylaşma.
-
-## Responsible Disclosure
-
-BFAnim'e katkıda bulunduğun ve güvenlik sorunlarını sorumlu şekilde bildirdiğin için teşekkürler.
-
-**Bir taunt animasyonu rakibi şaşırtabilir. Bir güvenlik açığı ise herkesi.**
+**Prism Crew Studio**  
+*Beyond the Spectrum*
