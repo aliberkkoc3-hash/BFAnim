@@ -1,0 +1,12 @@
+import funkin.modding.module.Module;
+
+class BooleanController extends Module
+{
+    // PC'de test ederken true, telefona APK çıkarırken false yaparsın kanka
+    public static var isMobile:Bool = false;
+
+    public function new()
+    {
+        super("boolean_controller");
+    }
+}

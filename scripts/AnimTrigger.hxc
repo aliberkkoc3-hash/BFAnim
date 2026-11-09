@@ -1,0 +1,50 @@
+import funkin.play.PlayState;
+import flixel.FlxG;
+import funkin.Paths;
+import funkin.modding.module.Module;
+import funkin.modding.events.UpdateScriptEvent;
+
+class AnimTrigger extends Module
+{
+    public function new()
+    {
+        super("bfanim");
+    }
+
+    override function onUpdate(event:UpdateScriptEvent)
+    {
+        super.onUpdate(event);
+
+        if (FlxG.keys.justPressed.B)
+        {
+            triggerTaunt();
+        }
+    }
+
+    private function triggerTaunt():Void
+    {
+        if (PlayState.instance == null || PlayState.instance.currentStage == null)
+        {
+            return;
+        }
+
+        var plr = PlayState.instance.currentStage.getBoyfriend();
+        if (plr == null)
+        {
+            return;
+        }
+
+        FlxG.sound.play(Paths.sound('hey_Sound'));
+
+        var charId = plr.characterId != null ? plr.characterId.toLowerCase() : "bf";
+        if (charId.indexOf("pico") != -1)
+        {
+            plr.playAnimation('hey', true, false);
+        }
+        else
+        {
+            plr.playAnimation('hey', true, false);
+        }
+        plr.holdTimer = 0;
+    }
+}

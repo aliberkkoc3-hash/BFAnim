@@ -1,0 +1,146 @@
+import funkin.play.PlayState;
+import flixel.FlxG;
+import flixel.ui.FlxButton;
+import funkin.Paths;
+import funkin.modding.module.Module;
+import funkin.modding.module.ModuleHandler;
+import funkin.modding.events.UpdateScriptEvent;
+
+class CharacterController extends Module
+{
+    private var tauntButtonBF:FlxButton;
+    private var tauntButtonPico:FlxButton;
+    
+    private var buttonsCreated:Bool = false;
+    private var currentCharacterName:String = "bf";
+
+    public function new()
+    {
+        super("character_controller");
+    }
+
+    override function onUpdate(event:UpdateScriptEvent)
+    {
+        super.onUpdate(event);
+
+        // 0.8.6 ve 0.8.8 sürümleri arasındaki milisaniyelik sahne yüklenme farklarını
+        // tolere etmek için null güvenlik duvarı uyguluyoruz:
+        if (PlayState.instance == null || PlayState.instance.camHUD == null || PlayState.instance.currentStage == null) {
+            return; // Eğer temel yapılar henüz hafızada yoksa bu kareyi güvenle atla
+        }
+
+        var bf = PlayState.instance.currentStage.getBoyfriend();
+        if (bf == null || bf.characterId == null) {
+            return; // Karakter referansı henüz oturmadıysa oyunun çökmesini önlemek için bekle
+        }
+
+        // --- BUTON OLUŞTURMA MANTIĞI ---
+        if (!buttonsCreated)
+        {
+            currentCharacterName = bf.characterId.toLowerCase();
+
+            var stateCtrl = ModuleHandler.getModule("state_controller");
+            var targetMobileState:Bool = true; // StateController bulunamazsa yedek koruma varsayılanı
+
+            if (stateCtrl != null && Reflect.field(stateCtrl, "isMobile") != null)
+            {
+                targetMobileState = Reflect.field(stateCtrl, "isMobile");
+            }
+
+            // Cihaz mobilse veya StateController'dan test modu aktif edildiyse butonları bas
+            if (FlxG.onMobile || targetMobileState)
+            {
+                createButtons();
+            }
+            buttonsCreated = true;
+        }
+
+        // --- DİNAMİK GÖRÜNÜRLÜK KONTROLÜ ---
+        if (buttonsCreated)
+        {
+            var currentName = bf.characterId.toLowerCase();
+            
+            if (currentName.indexOf("pico") != -1)
+            {
+                if (tauntButtonPico != null) tauntButtonPico.visible = true;
+                if (tauntButtonBF != null) tauntButtonBF.visible = false;
+            }
+            else
+            {
+                if (tauntButtonBF != null) tauntButtonBF.visible = true;
+                if (tauntButtonPico != null) tauntButtonPico.visible = false;
+            }
+        }
+    }
+
+    private function createButtons():Void
+    {
+        var btnWidth = 120;
+        var btnHeight = 120;
+        var posX = FlxG.width - btnWidth - 10;
+        var posY = (FlxG.height / 2) - 60;
+
+        // --- BF BUTONU OLUŞTURMA ---
+        tauntButtonBF = new FlxButton(posX, posY, "", function() {
+            executeTauntAction();
+        });
+        var atlasBF = Paths.getSparrowAtlas('TauntBF');
+        if (atlasBF != null) {
+            tauntButtonBF.frames = atlasBF;
+            tauntButtonBF.animation.addByPrefix('normal', 'TauntBF(IDLE).png', 24, false);
+            tauntButtonBF.animation.addByPrefix('highlight', 'TauntBF(HOVER).png', 24, false);
+            tauntButtonBF.animation.addByPrefix('pressed', 'TauntBF(CONFIRM).png', 24, false);
+            tauntButtonBF.setGraphicSize(btnWidth, btnHeight);
+            tauntButtonBF.updateHitbox();
+            tauntButtonBF.animation.play('normal');
+        }
+        tauntButtonBF.cameras = [PlayState.instance.camHUD];
+        tauntButtonBF.visible = false;
+        PlayState.instance.add(tauntButtonBF);
+
+        // --- PICO BUTONU OLUŞTURMA ---
+        tauntButtonPico = new FlxButton(posX, posY, "", function() {
+            executeTauntAction();
+        });
+        var atlasPico = Paths.getSparrowAtlas('TauntPICO');
+        if (atlasPico != null) {
+            tauntButtonPico.frames = atlasPico;
+            tauntButtonPico.animation.addByPrefix('normal', 'TauntPico(IDLE).png', 24, false);
+            tauntButtonPico.animation.addByPrefix('highlight', 'TauntPico(HOVER).png', 24, false);
+            tauntButtonPico.animation.addByPrefix('pressed', 'TauntPico(CONFIRM).png', 24, false);
+            tauntButtonPico.setGraphicSize(btnWidth, btnHeight);
+            tauntButtonPico.updateHitbox();
+            tauntButtonPico.animation.play('normal');
+        }
+        tauntButtonPico.cameras = [PlayState.instance.camHUD];
+        tauntButtonPico.visible = false;
+        PlayState.instance.add(tauntButtonPico);
+    }
+
+    private function executeTauntAction():Void
+    {
+        FlxG.sound.play(Paths.sound('hey_Sound'));
+
+        if (PlayState.instance != null && PlayState.instance.currentStage != null)
+        {
+            var bf = PlayState.instance.currentStage.getBoyfriend();
+            if (bf != null)
+            {
+                var charId = bf.characterId != null ? bf.characterId.toLowerCase() : "bf";
+                
+                if (charId.indexOf("pico") != -1) {
+                    bf.playAnimation('hey', true, false);
+                } else {
+                    bf.playAnimation('hey', true, false);
+                }
+                bf.holdTimer = 0;
+            }
+        }
+    }
+
+    override function onSongStart(event:Dynamic)
+    {
+        super.onSongStart(event);
+        buttonsCreated = false; // Şarkı baştan başladığında buton yapısını tazeler
+    }
+}
